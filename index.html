@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mr Cutts Banani — Men's Barbershop &amp; Grooming</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700;800&family=Noto+Serif+Bengali:wght@100..900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --char:#121212; --char2:#1b1b1b; --char3:#242424; --cream:#f1e9dc; --cream2:#e6dccb; --brass:#c9a063; --brass-l:#e3c58f;
+    --red:#b8352f; --blue:#27477a; --muted:#8d867b; --line:rgba(241,233,220,.12); --line-d:rgba(18,18,18,.12);
+    --disp:'Anton', Impact, 'Arial Narrow', sans-serif;
+    --serif:'Instrument Serif', Georgia, serif;
+    --sans:'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--char);color:var(--cream);font-family:var(--sans);line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  img,svg{display:block}
+  ::selection{background:var(--brass);color:var(--char)}
+
+  .demo{position:fixed;top:0;left:0;right:0;z-index:60;background:var(--brass);color:var(--char);font-size:12px;letter-spacing:.04em;text-align:center;padding:6px 12px;font-weight:600}
+  .demo .short{display:none}
+  @media(max-width:600px){.demo .long{display:none}.demo .short{display:inline}}
+  .progress{position:fixed;top:30px;left:0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(0);z-index:61;background:repeating-linear-gradient(90deg,var(--red) 0 10px,var(--cream) 10px 20px,var(--blue) 20px 30px,var(--cream) 30px 40px)}
+
+  nav{position:fixed;top:30px;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 6vw;transition:background .4s,padding .4s,box-shadow .4s}
+  nav.scrolled{background:rgba(18,18,18,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:10px 6vw;box-shadow:0 1px 0 var(--line)}
+  .logo{display:flex;align-items:center;gap:12px;line-height:1}
+  .logo .pole-s{width:14px;height:40px;border-radius:7px;overflow:hidden;position:relative;box-shadow:0 0 0 2px var(--brass)}
+  .logo .name{font-family:var(--disp);font-size:28px;letter-spacing:.04em;display:block;text-transform:uppercase}
+  .logo .sub{font-size:9.5px;letter-spacing:.4em;text-transform:uppercase;color:var(--brass);margin-top:4px;display:block;font-weight:700}
+  .navlinks{display:flex;gap:30px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700}
+  .navlinks a{opacity:.7;transition:opacity .3s,color .3s}
+  .navlinks a:hover{opacity:1;color:var(--brass)}
+  .navright{display:flex;align-items:center;gap:12px}
+  .navcta{background:var(--cream);color:var(--char);padding:11px 20px;border-radius:4px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;transition:background .3s}
+  .navcta:hover{background:var(--brass)}
+  .lang{display:flex;border:1px solid var(--line);border-radius:4px;padding:3px;background:var(--char2);cursor:pointer;font-family:var(--sans)}
+  .lang span{padding:6px 11px;border-radius:3px;font-size:12px;color:var(--muted);transition:background .35s,color .35s;font-weight:700}
+  html[lang="en"] .lang span[data-l="en"],html[lang="bn"] .lang span[data-l="bn"]{background:var(--brass);color:var(--char)}
+  .lang span[data-l="bn"]{font-family:'Noto Serif Bengali',serif}
+  @media(max-width:900px){.navlinks{display:none}}
+  @media(max-width:460px){.navcta{display:none}}
+
+  /* pole */
+  .pole-bg{position:absolute;inset:0;background:
+      linear-gradient(90deg,rgba(0,0,0,.45),rgba(0,0,0,0) 28%,rgba(255,255,255,.35) 48%,rgba(0,0,0,0) 68%,rgba(0,0,0,.45)),
+      repeating-linear-gradient(45deg,var(--red) 0 14px,#f6f1e8 14px 28px,var(--blue) 28px 42px,#f6f1e8 42px 56px);
+    animation:pole 2.4s linear infinite}
+  @keyframes pole{to{background-position:0 0,0 79.2px}}
+
+  /* hero */
+  .hero{min-height:100svh;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:5vw;padding:150px 6vw 100px;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 75% 35%,rgba(201,160,99,.16),transparent 55%),radial-gradient(ellipse at 10% 90%,rgba(184,53,47,.12),transparent 50%);pointer-events:none}
+  .grain{position:absolute;inset:0;opacity:.07;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .hero > div:not(.grain){position:relative;z-index:2;min-width:0}
+  .live{display:inline-flex;align-items:center;gap:9px;font-size:12.5px;font-weight:600;margin-bottom:26px;color:var(--cream2);border:1px solid var(--line);padding:7px 14px;border-radius:4px;background:rgba(255,255,255,.03)}
+  .live i{width:8px;height:8px;border-radius:50%;background:#4cc27f;box-shadow:0 0 0 0 rgba(76,194,127,.6);animation:ping 2s infinite}
+  .live.closed i{background:var(--red);animation:none}
+  @keyframes ping{70%{box-shadow:0 0 0 8px rgba(76,194,127,0)}100%{box-shadow:0 0 0 0 rgba(76,194,127,0)}}
+  h1{font-family:var(--disp);font-weight:400;font-size:clamp(58px,7.6vw,132px);line-height:.9;letter-spacing:.005em;text-transform:uppercase}
+  h1 .line{display:block;overflow:hidden;padding-bottom:.04em}
+  h1 .line > span{display:inline-block;transform:translateY(110%);animation:rise 1.1s cubic-bezier(.2,.8,.2,1) forwards}
+  h1 .line:nth-child(2) > span{animation-delay:.12s}
+  h1 .line:nth-child(3) > span{animation-delay:.24s}
+  h1 em{font-family:var(--serif);font-style:italic;text-transform:none;color:var(--brass);font-weight:400;letter-spacing:-.01em}
+  .outline{color:transparent;-webkit-text-stroke:1.5px var(--cream)}
+  @keyframes rise{to{transform:translateY(0)}}
+  @keyframes fade{to{opacity:1}}
+  .hero p.lead{max-width:470px;margin-top:28px;color:#bdb5a8;font-size:17px;opacity:0;animation:fade 1s .7s forwards}
+  .hero-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px;opacity:0;animation:fade 1s .9s forwards}
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:17px 28px;border-radius:4px;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;transition:transform .3s,background .3s,color .3s,border-color .3s;position:relative;overflow:hidden;cursor:pointer;border:1px solid transparent;font-family:var(--sans)}
+  .btn-main{background:var(--brass);color:var(--char)}
+  .btn-main:hover{background:var(--brass-l);transform:translateY(-2px)}
+  .btn-main::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);transform:translateX(-120%);transition:transform .8s}
+  .btn-main:hover::after{transform:translateX(120%)}
+  .btn-line{border-color:rgba(241,233,220,.3);color:var(--cream)}
+  .btn-line:hover{border-color:var(--cream);background:rgba(255,255,255,.05)}
+  .meta{display:flex;gap:40px;margin-top:46px;font-size:12.5px;color:var(--muted);opacity:0;animation:fade 1s 1.1s forwards;flex-wrap:wrap}
+  .meta strong{display:block;font-family:var(--disp);font-size:36px;font-weight:400;color:var(--cream);line-height:1.05;letter-spacing:.02em}
+
+  .frames{position:relative;width:100%;max-width:440px;justify-self:center;aspect-ratio:3/4.1;opacity:0;animation:fade 1.4s .3s forwards}
+  .mirror{position:absolute;inset:0;border-radius:220px 220px 10px 10px;overflow:hidden;background:linear-gradient(170deg,#2b2621,#121212);box-shadow:0 0 0 10px var(--char2),0 0 0 12px var(--brass),0 40px 80px rgba(0,0,0,.55)}
+  .mirror img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:kenburns 22s ease-in-out infinite alternate}
+  @keyframes kenburns{from{transform:scale(1.03)}to{transform:scale(1.12)}}
+  .mirror svg.ph{position:absolute;inset:0;width:100%;height:100%}
+  .mirror::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.12) 45%,transparent 55%);transform:translateX(-100%);animation:sheen 7s 1.6s ease-in-out infinite}
+  @keyframes sheen{0%,60%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+  .pole{position:absolute;left:-12%;top:12%;width:46px;height:58%;z-index:3}
+  .pole .cap{position:absolute;left:-6px;right:-6px;height:22px;background:linear-gradient(90deg,#8a6a39,var(--brass-l),#8a6a39);border-radius:6px;z-index:2}
+  .pole .cap.t{top:-14px;border-radius:24px 24px 6px 6px}
+  .pole .cap.b{bottom:-14px;border-radius:6px 6px 24px 24px}
+  .pole .glass{position:absolute;inset:0;border-radius:6px;overflow:hidden;box-shadow:inset 0 0 0 2px rgba(255,255,255,.15)}
+  .price-tag{position:absolute;right:-8%;bottom:9%;z-index:4;background:var(--cream);color:var(--char);border-radius:6px;padding:14px 18px;box-shadow:0 20px 40px rgba(0,0,0,.4);animation:bob 6s ease-in-out infinite;transform-origin:50% 0}
+  .price-tag::before{content:"";position:absolute;top:-8px;left:50%;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--char);box-shadow:0 0 0 3px var(--brass)}
+  .price-tag strong{display:block;font-family:var(--disp);font-size:32px;line-height:1;font-weight:400;letter-spacing:.02em}
+  .price-tag span{font-size:12px;color:#5e574d;font-weight:600}
+  @keyframes bob{50%{transform:translateY(-10px) rotate(-2deg)}}
+  .scissor{position:absolute;right:-4%;top:-4%;width:24%;z-index:4;animation:snip 3.2s ease-in-out infinite;transform-origin:50% 50%}
+  @keyframes snip{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+  .scissor .bl{transform-origin:50px 50px;animation:open 1.6s ease-in-out infinite}
+  .scissor .bl2{transform-origin:50px 50px;animation:open2 1.6s ease-in-out infinite}
+  @keyframes open{50%{transform:rotate(-14deg)}}
+  @keyframes open2{50%{transform:rotate(14deg)}}
+  @media(max-width:900px){
+    .hero{grid-template-columns:1fr;padding-top:140px;gap:46px}
+    .frames{max-width:250px;order:-1}
+    .pole{left:-20%;width:34px}
+    .price-tag{right:-22%;padding:10px 14px}.price-tag strong{font-size:24px}
+  }
+
+  .stripe{height:14px;background:repeating-linear-gradient(45deg,var(--red) 0 14px,var(--cream) 14px 28px,var(--blue) 28px 42px,var(--cream) 42px 56px);background-size:79.2px 79.2px;animation:stripe 3s linear infinite}
+  @keyframes stripe{to{background-position:79.2px 0}}
+  .marquee{background:var(--cream);color:var(--char);overflow:hidden;padding:20px 0}
+  .track{display:flex;gap:44px;width:max-content;animation:scroll 32s linear infinite}
+  .track span{font-family:var(--disp);font-size:34px;text-transform:uppercase;white-space:nowrap;letter-spacing:.03em}
+  .track i{font-style:normal;color:var(--red);align-self:center;font-size:20px}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+
+  section{padding:120px 6vw;position:relative}
+  .sec-head{max-width:700px;margin-bottom:56px}
+  .kicker{font-size:11.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--brass);font-weight:800;margin-bottom:18px;display:flex;align-items:center;gap:14px}
+  .kicker::before{content:"";width:34px;height:3px;background:repeating-linear-gradient(90deg,var(--red) 0 8px,var(--cream) 8px 12px,var(--blue) 12px 20px,var(--cream) 20px 24px)}
+  h2{font-family:var(--disp);font-weight:400;font-size:clamp(48px,6.4vw,100px);line-height:.95;letter-spacing:.005em;text-transform:uppercase}
+  h2 em{font-family:var(--serif);font-style:italic;text-transform:none;color:var(--brass);letter-spacing:-.01em}
+  .sec-head p{color:#bdb5a8;margin-top:20px;font-size:16.5px}
+  .light{background:var(--cream);color:var(--char)}
+  .light .sec-head p{color:#5e574d}
+  .light h2 em{color:var(--red)}
+  .light .kicker{color:var(--red)}
+
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity 1s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* price list */
+  .menu{display:grid;grid-template-columns:1fr 1fr;gap:0 70px}
+  .menu > *{min-width:0}
+  .mi{display:flex;align-items:baseline;gap:14px;padding:24px 0;border-bottom:1px solid var(--line-d);cursor:default;transition:padding .35s}
+  .mi:hover{padding-left:10px}
+  .mi h4{font-family:var(--disp);font-weight:400;font-size:28px;text-transform:uppercase;letter-spacing:.02em;line-height:1.1}
+  .mi small{display:block;font-family:var(--sans);font-size:13.5px;color:#6b6358;text-transform:none;letter-spacing:0;margin-top:4px;font-weight:500}
+  .mi .dots{flex:1;border-bottom:2px dotted rgba(18,18,18,.25);transform:translateY(-6px);min-width:20px}
+  .mi .pr{font-family:var(--disp);font-size:30px;color:var(--red);white-space:nowrap}
+  .mi .pr small{display:inline;font-size:12px;color:#6b6358;margin:0}
+  .menu-note{grid-column:1/-1;margin-top:26px;font-size:14px;color:#6b6358}
+  @media(max-width:900px){.menu{grid-template-columns:1fr}.mi h4{font-size:24px}.mi .pr{font-size:26px}}
+
+  /* cut builder */
+  #builder{background:radial-gradient(ellipse at 20% 30%,rgba(201,160,99,.12),transparent 60%),var(--char)}
+  .builder{display:grid;grid-template-columns:.9fr 1.1fr;gap:60px;align-items:center}
+  .builder > *{min-width:0}
+  .stage{position:relative;max-width:420px;width:100%;margin:0 auto;aspect-ratio:300/340;background:var(--char2);border-radius:220px 220px 16px 16px;box-shadow:0 0 0 1px var(--line),0 30px 60px rgba(0,0,0,.4)}
+  .stage svg{width:100%;height:100%}
+  #hairTop,#ghostTop{transition:d .45s cubic-bezier(.4,0,.2,1)}
+  .ctrl{margin-bottom:26px}
+  .ctrl .lbl{display:flex;justify-content:space-between;font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:800;color:var(--cream2);margin-bottom:12px}
+  .ctrl .lbl b{font-family:var(--disp);font-size:24px;letter-spacing:.02em;color:var(--brass);font-weight:400;text-transform:none}
+  .seg{display:flex;flex-wrap:wrap;gap:8px}
+  .seg button{background:var(--char2);border:1px solid var(--line);color:var(--cream2);border-radius:4px;padding:10px 14px;font-family:var(--sans);font-size:13.5px;font-weight:700;cursor:pointer;transition:all .25s}
+  .seg button:hover{border-color:var(--brass)}
+  .seg button.on{background:var(--brass);border-color:var(--brass);color:var(--char)}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:30px;background:transparent;cursor:pointer}
+  input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--brass) var(--p,0%),var(--char3) var(--p,0%))}
+  input[type=range]::-moz-range-track{height:8px;border-radius:4px;background:var(--char3)}
+  input[type=range]::-moz-range-progress{height:8px;border-radius:4px;background:var(--brass)}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;margin-top:-8px;border-radius:50%;background:var(--cream);border:4px solid var(--brass);box-shadow:0 4px 12px rgba(0,0,0,.4)}
+  input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--cream);border:4px solid var(--brass)}
+  .ticks{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:2px}
+  .summary{background:var(--char2);border:1px dashed rgba(201,160,99,.45);border-radius:8px;padding:18px 20px;margin:6px 0 24px}
+  .summary .k{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--brass);font-weight:800}
+  .summary p{font-family:var(--serif);font-size:clamp(24px,2.6vw,32px);line-height:1.2;margin-top:6px}
+  .summary small{display:block;color:var(--muted);font-size:13px;margin-top:8px}
+  @media(max-width:900px){.builder{grid-template-columns:1fr;gap:36px}.stage{max-width:280px}}
+
+  /* why */
+  .why{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .wy{background:var(--char2);border:1px solid var(--line);border-radius:8px;padding:30px 24px;transition:transform .35s,border-color .35s}
+  .wy:hover{transform:translateY(-5px);border-color:rgba(201,160,99,.5)}
+  .wy .n{font-family:var(--disp);font-size:52px;line-height:1;color:transparent;-webkit-text-stroke:1.2px var(--brass)}
+  .wy h5{font-family:var(--disp);font-weight:400;font-size:24px;text-transform:uppercase;letter-spacing:.02em;margin-top:16px;line-height:1.1}
+  .wy p{color:#a9a196;font-size:14.5px;margin-top:8px}
+  @media(max-width:1000px){.why{grid-template-columns:1fr 1fr}}
+  @media(max-width:540px){.why{grid-template-columns:1fr}}
+
+  /* gallery */
+  .gallery{display:grid;grid-template-columns:1fr 1.3fr 1fr;gap:18px;align-items:center}
+  .gi{position:relative;border-radius:8px;overflow:hidden;aspect-ratio:3/4;background:linear-gradient(160deg,#3a322a,#121212)}
+  .gi:nth-child(2){aspect-ratio:3/3.6;border-radius:200px 200px 8px 8px}
+  .gi img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.4s cubic-bezier(.2,.8,.2,1);filter:saturate(.9)}
+  .gi:hover img{transform:scale(1.06)}
+  .gi .cap{position:absolute;left:0;right:0;bottom:0;padding:50px 20px 18px;background:linear-gradient(transparent,rgba(0,0,0,.8))}
+  .gi .cap b{font-family:var(--disp);font-weight:400;font-size:24px;text-transform:uppercase;letter-spacing:.03em;display:block}
+  .gi .cap span{font-size:13px;color:#cfc7ba}
+  .gi svg.ph{position:absolute;inset:0;width:100%;height:100%}
+  @media(max-width:900px){.gallery{grid-template-columns:1fr;max-width:400px;margin:0 auto}.gi:nth-child(2){aspect-ratio:3/4}}
+
+  /* reviews */
+  .rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .rev{border-radius:8px;padding:32px 28px;background:var(--cream2);position:relative}
+  .rev::before{content:"\201C";position:absolute;right:20px;top:-10px;font-family:var(--serif);font-size:120px;line-height:1;color:var(--red);opacity:.25}
+  .rev .stars{color:var(--brass);letter-spacing:2px;font-size:13px}
+  .rev q{display:block;font-family:var(--serif);font-size:26px;line-height:1.25;margin-top:12px;quotes:none}
+  .rev span{display:block;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:#6b6358;margin-top:18px;font-weight:800}
+  @media(max-width:900px){.rev-grid{grid-template-columns:1fr}}
+
+  /* booking */
+  .book{display:grid;grid-template-columns:.85fr 1.15fr;gap:70px;align-items:start}
+  .book > *{min-width:0}
+  .book ul{list-style:none;margin-top:30px;display:grid;gap:14px}
+  .book li{display:flex;gap:14px;font-size:16px;color:#d6cec1}
+  .book li b{flex:none;font-family:var(--disp);font-weight:400;font-size:22px;color:var(--brass);min-width:24px}
+  .tip{margin-top:30px;border:1px solid var(--line);border-radius:8px;padding:18px 20px;font-size:14.5px;color:#a9a196;background:var(--char2)}
+  .tip strong{color:var(--cream)}
+  .form{background:var(--cream);color:var(--char);border-radius:10px;padding:40px 36px;box-shadow:0 30px 70px rgba(0,0,0,.4)}
+  .form h3{font-family:var(--disp);font-weight:400;font-size:40px;text-transform:uppercase;letter-spacing:.02em;line-height:1}
+  .form .hint{color:#6b6358;font-size:14px;margin:8px 0 26px}
+  .flbl{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);font-weight:800;margin-bottom:10px;display:block}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+  .chip{border:1px solid var(--line-d);background:#fff8ee;border-radius:4px;padding:9px 14px;font-family:var(--sans);font-size:14px;color:var(--char);cursor:pointer;transition:all .25s;font-weight:600}
+  .chip:hover{border-color:var(--char)}
+  .chip.on{background:var(--char);border-color:var(--char);color:var(--cream)}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .field{margin-bottom:22px}
+  .field input{width:100%;background:#fff8ee;border:1px solid var(--line-d);border-radius:6px;padding:14px 16px;font-family:var(--sans);font-size:15px;color:var(--char);outline:none;transition:border-color .3s;-webkit-appearance:none;appearance:none}
+  .field input:focus{border-color:var(--char)}
+  .cutnote{display:none;margin:-6px 0 20px;font-size:13.5px;background:var(--char);color:var(--cream);border-radius:6px;padding:11px 14px}
+  .cutnote.show{display:block}
+  .form .btn{width:100%;justify-content:center;margin-top:4px;background:var(--char);color:var(--cream)}
+  .form .btn:hover{background:var(--red)}
+  .form .small{font-size:12.5px;color:#6b6358;margin-top:12px;text-align:center}
+  @media(max-width:900px){.book{grid-template-columns:1fr;gap:40px}.form{padding:30px 22px}.row{grid-template-columns:1fr}}
+
+  /* visit */
+  .visit{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .vcard{border-top:3px solid var(--brass);padding:26px 4px 0}
+  .vcard .k{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--brass);font-weight:800}
+  .vcard h4{font-family:var(--disp);font-weight:400;font-size:26px;text-transform:uppercase;letter-spacing:.02em;margin:12px 0 8px;line-height:1.2}
+  .vcard p{color:#a9a196;font-size:14.5px}
+  .vcard a.link{display:inline-block;margin-top:14px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;border-bottom:2px solid var(--brass);padding-bottom:3px;font-weight:800}
+  .map{margin-top:40px;border-radius:10px;overflow:hidden;aspect-ratio:21/8;border:1px solid var(--line);background:var(--char2)}
+  .map iframe{width:100%;height:100%;border:0;filter:grayscale(1) invert(.9) contrast(.9)}
+  @media(max-width:900px){.visit{grid-template-columns:1fr;gap:34px}.map{aspect-ratio:4/3}section{padding:90px 6vw}}
+
+  footer{background:#0b0b0b;color:#8d867b;padding:60px 6vw 30px}
+  .foot-big{font-family:var(--disp);font-size:clamp(80px,17vw,280px);line-height:.85;color:var(--cream);text-transform:uppercase;letter-spacing:.01em}
+  .foot-big em{font-family:var(--serif);font-style:italic;text-transform:none;color:var(--brass)}
+  .foot-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:13px;margin-top:40px;padding-top:24px;border-top:1px solid var(--line)}
+  .foot-row a{color:var(--brass)}
+
+  .fab{position:fixed;right:20px;bottom:20px;z-index:55;width:58px;height:58px;border-radius:50%;background:#25d366;display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,0,0,.4);animation:pulse 2.6s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(37,211,102,.55)}70%{box-shadow:0 0 0 18px rgba(37,211,102,0)}100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}}
+
+
+  /* hero v2: sliced wordmark */
+  .hero2{min-height:100svh;padding:120px 6vw 60px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:clamp(18px,3vh,34px)}
+  .hero2::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(201,160,99,.16),transparent 60%),radial-gradient(ellipse at 0% 100%,rgba(184,53,47,.14),transparent 50%),radial-gradient(ellipse at 100% 100%,rgba(39,71,122,.16),transparent 50%);pointer-events:none}
+  .hero2 > *{position:relative;z-index:2}
+  .hero2 > .grain{position:absolute;z-index:0}
+  .h2-top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;opacity:0;animation:fade 1s .2s forwards}
+  .h2-top .live{margin:0}
+  .h2-est{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--brass);font-weight:800}
+  .word{position:relative;font-family:var(--disp);font-weight:400;text-transform:uppercase;line-height:.84;white-space:nowrap;text-align:center;letter-spacing:.005em;font-size:22vw;height:.84em;margin:0}
+  .word .w{position:absolute;left:0;right:0;top:0;display:block;color:var(--cream)}
+  .word .w-top{clip-path:polygon(0 0,100% 0,100% 40%,0 62%);animation:wIn 1s cubic-bezier(.2,.8,.2,1) both}
+  .word .w-bot{clip-path:polygon(0 62%,100% 40%,100% 100%,0 100%);color:transparent;-webkit-text-stroke:2px var(--cream);animation:wIn 1s .08s cubic-bezier(.2,.8,.2,1) both,slide .9s 2.2s cubic-bezier(.3,1.4,.4,1) forwards}
+  @keyframes wIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+  @keyframes slide{to{transform:translate(1.6%,4%)}}
+  .cutline{position:absolute;left:0;right:0;top:0;height:100%;pointer-events:none;background:linear-gradient(to bottom right,transparent calc(50% - 1px),var(--brass) calc(50% - 1px),var(--brass) calc(50% + 1px),transparent calc(50% + 1px));clip-path:polygon(0 0,0 0,0 100%,0 100%);opacity:.9;animation:line 1.4s .9s linear forwards;transform:scaleY(.22) translateY(40%);transform-origin:0 0}
+  .cutline{background:none;height:2px;top:51%;transform:rotate(var(--ang,-4deg));transform-origin:0 50%;background:repeating-linear-gradient(90deg,var(--brass) 0 12px,transparent 12px 20px);clip-path:inset(0 100% 0 0);animation:line 1.3s .9s linear forwards}
+  @keyframes line{to{clip-path:inset(0 0 0 0)}}
+  .snip{position:absolute;width:clamp(44px,7vw,96px);left:-8%;top:51%;margin-top:calc(clamp(44px,7vw,96px) / -2);z-index:3;animation:travel 1.3s .9s linear forwards,gone .4s 2.3s forwards;transform:rotate(var(--ang,-4deg))}
+  .snip .bl{transform-origin:50px 50px;animation:open .26s ease-in-out infinite}
+  .snip .bl2{transform-origin:50px 50px;animation:open2 .26s ease-in-out infinite}
+  @keyframes travel{from{left:-8%;translate:0 0}to{left:100%;translate:0 var(--rise,-40px)}}
+  @keyframes gone{to{opacity:0}}
+  .h2-grid{display:grid;grid-template-columns:1fr 1.15fr .8fr;gap:clamp(20px,3vw,48px);align-items:end}
+  .h2-grid > *{min-width:0}
+  .h2-left{opacity:0;animation:fade 1s 1.2s forwards}
+  .tag{font-family:var(--serif);font-size:clamp(34px,3.4vw,54px);line-height:1.02;color:var(--cream)}
+  .tag em{color:var(--brass)}
+  .h2-left .lead{margin-top:16px;color:#bdb5a8;font-size:15.5px;max-width:420px}
+  .h2-left .hero-ctas{opacity:1;animation:none;margin-top:24px}
+  .h2-img{position:relative;aspect-ratio:4/3;border-radius:14px;overflow:hidden;background:#1b1b1b;box-shadow:0 0 0 1px rgba(201,160,99,.4),0 40px 80px rgba(0,0,0,.55);opacity:0;animation:imgIn 1.2s 1s cubic-bezier(.2,.8,.2,1) forwards}
+  @keyframes imgIn{from{opacity:0;transform:translateY(40px) scale(.96)}to{opacity:1;transform:none}}
+  .h2-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:kenburns 22s ease-in-out infinite alternate}
+  .h2-img svg.ph{position:absolute;inset:0;width:100%;height:100%}
+  .h2-img::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.12) 45%,transparent 55%);transform:translateX(-100%);animation:sheen 7s 2.4s ease-in-out infinite}
+  .h2-pole{position:absolute;left:14px;top:14px;bottom:14px;width:12px;border-radius:6px;overflow:hidden;box-shadow:0 0 0 2px var(--brass);z-index:2}
+  .h2-img .price-tag{right:14px;bottom:14px;top:auto;animation:none}
+  .h2-img .price-tag::before{display:none}
+  .h2-right{display:grid;gap:16px;opacity:0;animation:fade 1s 1.4s forwards}
+  .fact{border-top:1px solid var(--line);padding-top:12px}
+  .fact b{display:block;font-family:var(--disp);font-weight:400;font-size:clamp(30px,2.6vw,40px);line-height:1;letter-spacing:.02em}
+  .fact span{font-size:13px;color:var(--muted)}
+  .fact-link{font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:800;color:var(--brass);border-top:1px solid var(--line);padding-top:14px}
+  html[lang="bn"] .tag{font-family:'Instrument Serif','Noto Serif Bengali',serif;font-weight:700;line-height:1.3;font-size:clamp(30px,3vw,46px)}
+  html[lang="bn"] .tag em{font-style:normal}
+  html[lang="bn"] .h2-est,html[lang="bn"] .fact-link{letter-spacing:.04em;text-transform:none;font-size:14px}
+  html[lang="bn"] .fact b{font-family:'Anton','Noto Serif Bengali',serif;font-weight:700}
+  @media(max-width:980px){
+    .h2-grid{grid-template-columns:1fr 1fr}
+    .h2-img{grid-column:1/-1;order:-1}
+    .h2-right{grid-template-columns:repeat(3,1fr);align-self:end}
+    .fact-link{grid-column:1/-1}
+  }
+  @media(max-width:620px){
+    .hero2{padding-top:110px;justify-content:flex-start}
+    .h2-grid{grid-template-columns:1fr}
+    .h2-right{grid-template-columns:repeat(3,1fr);gap:12px}
+    .h2-est{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){.h2-top,.h2-left,.h2-right,.h2-img{opacity:1!important}.snip{display:none}.cutline{clip-path:none!important}}
+
+
+  /* futuristic layer */
+  .hero2{--px:0;--py:0;--mx:50%;--my:40%}
+  .aurora{position:absolute;inset:-10%;z-index:0;filter:blur(90px);opacity:.75;pointer-events:none}
+  .aurora i{position:absolute;border-radius:50%;mix-blend-mode:screen}
+  .aurora i:nth-child(1){width:46vw;height:46vw;left:5%;top:-10%;background:radial-gradient(circle,rgba(201,160,99,.55),transparent 65%);animation:a1 16s ease-in-out infinite alternate}
+  .aurora i:nth-child(2){width:38vw;height:38vw;right:0;top:20%;background:radial-gradient(circle,rgba(39,90,180,.5),transparent 65%);animation:a2 19s ease-in-out infinite alternate}
+  .aurora i:nth-child(3){width:34vw;height:34vw;left:30%;bottom:-15%;background:radial-gradient(circle,rgba(200,50,45,.4),transparent 65%);animation:a3 22s ease-in-out infinite alternate}
+  @keyframes a1{to{transform:translate(18vw,10vh) scale(1.15)}}
+  @keyframes a2{to{transform:translate(-20vw,-6vh) scale(.9)}}
+  @keyframes a3{to{transform:translate(14vw,-14vh) scale(1.2)}}
+  .floor{position:absolute;left:-20%;right:-20%;bottom:-8%;height:55%;z-index:0;pointer-events:none;
+    background-image:linear-gradient(rgba(227,197,143,.34) 1px,transparent 1px),linear-gradient(90deg,rgba(227,197,143,.34) 1px,transparent 1px);background-size:64px 64px;
+    transform:perspective(520px) rotateX(64deg);transform-origin:50% 100%;animation:floor 3.2s linear infinite;
+    -webkit-mask-image:linear-gradient(to top,#000 10%,transparent 85%);mask-image:linear-gradient(to top,#000 10%,transparent 85%)}
+  @keyframes floor{to{background-position:0 64px,0 0}}
+  .spot{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(520px circle at var(--mx) var(--my),rgba(227,197,143,.13),transparent 60%);transition:background .1s}
+  .hero2 > .grain{z-index:1}
+  .clock{margin-left:18px;padding-left:18px;border-left:1px solid var(--line);font-variant-numeric:tabular-nums;color:var(--cream2)}
+  .word .w-top{background:linear-gradient(100deg,var(--cream) 0%,var(--cream) 38%,#fff6df 46%,var(--brass-l) 50%,#fff6df 54%,var(--cream) 62%,var(--cream) 100%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:wIn 1s cubic-bezier(.2,.8,.2,1) both,shimmer 5.5s 2.4s linear infinite;translate:calc(var(--px) * -14px) calc(var(--py) * -8px);transition:translate .25s ease-out}
+  @keyframes shimmer{from{background-position:120% 0}to{background-position:-120% 0}}
+  .word .w-bot{-webkit-text-stroke:2px rgba(241,233,220,.9);filter:drop-shadow(0 0 14px rgba(39,90,180,.45));translate:calc(var(--px) * 14px) calc(var(--py) * 8px);transition:translate .25s ease-out}
+  .cutline{filter:drop-shadow(0 0 6px rgba(227,197,143,.9))}
+  .h2-img{animation:imgIn2 1.2s 1s cubic-bezier(.2,.8,.2,1) forwards;transform:perspective(1000px) rotateY(calc(var(--px) * 7deg)) rotateX(calc(var(--py) * -7deg));transition:transform .3s ease-out;transform-style:preserve-3d;
+    box-shadow:0 0 0 1px rgba(227,197,143,.45),0 0 40px rgba(201,160,99,.18),0 40px 80px rgba(0,0,0,.55)}
+  @keyframes imgIn2{from{opacity:0;translate:0 40px;scale:.96}to{opacity:1;translate:0 0;scale:1}}
+  .hud{position:absolute;width:22px;height:22px;border:2px solid var(--brass-l);z-index:3;opacity:.9}
+  .hud.c1{top:12px;right:12px;border-left:none;border-bottom:none}
+  .hud.c2{top:12px;left:36px;border-right:none;border-bottom:none}
+  .hud.c3{bottom:12px;left:36px;border-right:none;border-top:none}
+  .hud.c4{bottom:12px;right:12px;border-left:none;border-top:none;display:none}
+  .scan{position:absolute;left:0;right:0;height:80px;top:-80px;z-index:2;background:linear-gradient(to bottom,transparent,rgba(227,197,143,.16) 70%,rgba(227,197,143,.6) 99%,transparent);animation:scan 4.5s 2.2s ease-in-out infinite;pointer-events:none}
+  @keyframes scan{0%{top:-80px}60%,100%{top:100%}}
+  .hud-read{position:absolute;left:44px;top:18px;z-index:3;display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.18em;font-weight:800;color:var(--cream);background:rgba(18,18,18,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:7px 11px;border-radius:999px;border:1px solid rgba(227,197,143,.35);font-variant-numeric:tabular-nums}
+  .hud-read .dot{width:7px;height:7px;border-radius:50%;background:#ff4d4d;box-shadow:0 0 10px #ff4d4d;animation:blinkR 1.2s infinite}
+  @keyframes blinkR{50%{opacity:.25}}
+  .h2-img .price-tag{background:rgba(241,233,220,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transform:translateZ(40px)}
+  .fact.glass{border:1px solid rgba(241,233,220,.1);border-radius:14px;padding:16px 18px;background:linear-gradient(140deg,rgba(255,255,255,.06),rgba(255,255,255,.015));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);position:relative;overflow:hidden;transition:border-color .3s,transform .3s}
+  .fact.glass::before{content:"";position:absolute;inset:0;background:radial-gradient(240px circle at var(--fx,50%) var(--fy,50%),rgba(227,197,143,.18),transparent 60%);opacity:0;transition:opacity .3s}
+  .fact.glass:hover{border-color:rgba(227,197,143,.45);transform:translateY(-3px)}
+  .fact.glass:hover::before{opacity:1}
+  .fact-link{border-top:none;padding-top:4px}
+  .btn-main{box-shadow:0 0 0 0 rgba(201,160,99,0),0 10px 30px rgba(201,160,99,.25)}
+  .btn-main:hover{box-shadow:0 0 34px rgba(227,197,143,.55),0 10px 30px rgba(201,160,99,.3)}
+  .mag{transition:transform .2s ease-out,background .3s,color .3s,border-color .3s,box-shadow .3s}
+  .btn-line{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);background:rgba(255,255,255,.04)}
+  @media(max-width:620px){.clock{display:none}.floor{height:40%}.hud-read{font-size:9.5px;letter-spacing:.12em}}
+  @media (prefers-reduced-motion: reduce){.aurora,.floor,.scan{animation:none!important}}
+
+  /* language */
+  .swap{transition:opacity .22s ease}
+  body.fading .swap{opacity:0}
+  html[lang="bn"] body,html[lang="bn"] button,html[lang="bn"] input{font-family:'Manrope','Noto Serif Bengali',serif}
+  html[lang="bn"] p,html[lang="bn"] li{line-height:1.85}
+  html[lang="bn"] h1,html[lang="bn"] h2,html[lang="bn"] h3,html[lang="bn"] h4,html[lang="bn"] h5,html[lang="bn"] .meta strong,html[lang="bn"] .price-tag strong,html[lang="bn"] .gi .cap b,html[lang="bn"] .summary p,html[lang="bn"] .rev q{font-family:'Anton','Noto Serif Bengali',serif;letter-spacing:0}
+  html[lang="bn"] h1{font-weight:800;font-size:clamp(46px,6.6vw,108px);line-height:1.22}
+  html[lang="bn"] h1 .line{padding-bottom:.1em}
+  html[lang="bn"] h1 em,html[lang="bn"] h2 em{font-family:'Noto Serif Bengali',serif;font-style:normal;font-weight:800}
+  html[lang="bn"] h2{font-weight:800;font-size:clamp(34px,4.6vw,64px);line-height:1.28}
+  html[lang="bn"] h3,html[lang="bn"] h4,html[lang="bn"] h5,html[lang="bn"] .gi .cap b{font-weight:700}
+  html[lang="bn"] .summary p,html[lang="bn"] .rev q{font-family:'Instrument Serif','Noto Serif Bengali',serif;font-weight:600}
+  html[lang="bn"] .kicker,html[lang="bn"] .btn,html[lang="bn"] .navcta,html[lang="bn"] .flbl,html[lang="bn"] .k,html[lang="bn"] .vcard a.link,html[lang="bn"] .rev span,html[lang="bn"] .ctrl .lbl,html[lang="bn"] .navlinks a{letter-spacing:.02em;text-transform:none;font-size:14.5px}
+  html[lang="bn"] .hero p.lead{font-size:18px;line-height:1.85}
+  html[lang="bn"] .logo .sub{letter-spacing:.08em;font-size:11px}
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    h1 .line > span,.hero p.lead,.hero-ctas,.meta,.frames,.reveal{opacity:1!important;transform:none!important}
+  }
+</style>
+</head>
+<body>
+
+<div class="demo"><span class="long" data-bn="মি. কাটসের জন্য ওয়েবসাইট প্রিভিউ তৈরি করেছে ">Website preview prepared for Mr Cutts by </span><span class="short" data-bn="প্রিভিউ: ">Preview by </span><b>FutureStack Solutions</b></div>
+<div class="progress" id="progress"></div>
+
+<nav id="nav">
+  <a href="#top" class="logo">
+    <span class="pole-s"><span class="pole-bg"></span></span>
+    <span><span class="name">Mr Cutts</span><span class="sub" data-bn="বনানী · ঢাকা">Banani · Dhaka</span></span>
+  </a>
+  <div class="navlinks">
+    <a href="#prices" data-bn="দাম">Prices</a>
+    <a href="#builder" data-bn="কাট বিল্ডার">Cut builder</a>
+    <a href="#reviews" data-bn="রিভিউ">Reviews</a>
+    <a href="#visit" data-bn="ঠিকানা">Visit</a>
+  </div>
+  <div class="navright">
+    <button class="lang" id="lang" aria-label="Switch language / ভাষা পরিবর্তন"><span data-l="en">EN</span><span data-l="bn">বাং</span></button>
+    <a href="#book" class="navcta" data-bn="বুক করুন">Book a chair</a>
+  </div>
+</nav>
+
+<header class="hero2" id="top">
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="floor" aria-hidden="true"></div>
+  <div class="spot" aria-hidden="true"></div>
+  <div class="grain"></div>
+  <div class="h2-top">
+    <div class="live" id="live"><i></i><span id="liveText">Open every day · 10 AM – 9 PM</span></div>
+    <div class="h2-est"><span data-bn="বনানী · রোড ১২">Banani · Road 12</span><span class="clock" id="clock">DHAKA --:--:--</span></div>
+  </div>
+  <h1 class="word" id="word" aria-label="Mr Cutts">
+    <span class="w w-top" aria-hidden="true">Mr Cutts</span>
+    <span class="w w-bot" aria-hidden="true">Mr Cutts</span>
+    <span class="cutline" aria-hidden="true"></span>
+    <svg class="snip" viewBox="0 0 100 100" aria-hidden="true">
+      <g class="bl"><path d="M50 50 L96 30 L97 34 Z" fill="#e3c58f"/><circle cx="26" cy="66" r="13" fill="none" stroke="#e3c58f" stroke-width="6"/><path d="M50 50 L36 60" stroke="#e3c58f" stroke-width="6"/></g>
+      <g class="bl2"><path d="M50 50 L96 70 L97 66 Z" fill="#c9a063"/><circle cx="26" cy="34" r="13" fill="none" stroke="#c9a063" stroke-width="6"/><path d="M50 50 L36 40" stroke="#c9a063" stroke-width="6"/></g>
+      <circle cx="50" cy="50" r="4.5" fill="#121212" stroke="#e3c58f" stroke-width="2"/>
+    </svg>
+  </h1>
+  <div class="h2-grid">
+    <div class="h2-left">
+      <p class="tag" data-bn="নিখুঁত কাট।&lt;br&gt;&lt;em&gt;কোনো অনুমান নয়।&lt;/em&gt;">Sharp cuts.<br><em>Zero guesswork.</em></p>
+      <p class="lead" data-bn="হেয়ারকাট, বিয়ার্ড, হট অয়েল ও হেয়ার ট্রিটমেন্ট। আগে থেকে ঠিক করে দিন কতটুকু কাটবেন, তারপর নিশ্চিন্তে বসুন।">Haircuts, beard work, hot oil and hair treatments. Tell us exactly how much comes off before you sit down.</p>
+      <div class="hero-ctas">
+        <a href="#book" class="btn btn-main mag" data-bn="চেয়ার বুক করুন">Book your chair</a>
+        <a href="#builder" class="btn btn-line mag" data-bn="কাট ডিজাইন করুন">Design your cut</a>
+      </div>
+    </div>
+    <div class="h2-img" data-slot="hero">
+      <svg class="ph" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><radialGradient id="lamp2" cx=".5" cy=".15" r=".8"><stop offset="0" stop-color="#6b5434"/><stop offset="1" stop-color="#141414"/></radialGradient></defs><rect width="400" height="300" fill="url(#lamp2)"/><rect x="150" y="150" width="100" height="40" rx="16" fill="#3a2e25"/><path d="M170 150 V100 Q170 80 200 80 Q230 80 230 100 V150" fill="#4a3a2c"/><path d="M140 300 V215 Q140 195 165 192 H235 Q260 195 260 215 V300" fill="#2a2420"/></svg>
+      <img src="img/hero.jpg" alt="A barber cutting a young man's hair in a dark, warmly lit barbershop" style="object-position:58% 40%" onerror="this.remove()">
+      <div class="h2-pole"><div class="pole-bg"></div></div>
+      <span class="hud c1"></span><span class="hud c2"></span><span class="hud c3"></span><span class="hud c4"></span>
+      <div class="scan"></div>
+      <div class="hud-read"><span class="dot"></span><span id="hudRead">MID FADE · −½" TOP</span></div>
+      <div class="price-tag" data-bn="&lt;strong&gt;৳৫০০&lt;/strong&gt;&lt;span&gt;হেয়ারকাট&lt;/span&gt;"><strong>৳500</strong><span>Haircut</span></div>
+    </div>
+    <div class="h2-right">
+      <div class="fact glass"><b data-bn="প্রতিদিন">Daily</b><span data-bn="সকাল ১০টা – রাত ৯টা">10 AM – 9 PM</span></div>
+      <div class="fact glass"><b data-bn="৫টি">5</b><span data-bn="গ্রুমিং সার্ভিস">grooming services</span></div>
+      <div class="fact glass"><b data-bn="২০১৭">2017</b><span data-bn="থেকে নিয়মিত ক্লায়েন্ট">regulars since</span></div>
+      <a href="#prices" class="fact-link" data-bn="সব দাম দেখুন ↓">See all prices ↓</a>
+    </div>
+  </div>
+</header>
+
+<div class="stripe" aria-hidden="true"></div>
+<div class="marquee" aria-hidden="true">
+  <div class="track">
+    <span>Haircuts</span><i>✂</i><span>Fades</span><i>✂</i><span>Beard Colour</span><i>✂</i><span>Hot Oil Therapy</span><i>✂</i><span>Protein Treatment</span><i>✂</i><span>Highlights</span><i>✂</i><span>Banani</span><i>✂</i>
+    <span>Haircuts</span><i>✂</i><span>Fades</span><i>✂</i><span>Beard Colour</span><i>✂</i><span>Hot Oil Therapy</span><i>✂</i><span>Protein Treatment</span><i>✂</i><span>Highlights</span><i>✂</i><span>Banani</span><i>✂</i>
+  </div>
+</div>
+
+<section id="prices" class="light">
+  <div class="sec-head reveal">
+    <div class="kicker" data-bn="দামের তালিকা">The price list</div>
+    <h2 data-bn="সোজা দাম, &lt;em&gt;কোনো লুকোচুরি নেই।&lt;/em&gt;">Straight prices. <em>No surprises.</em></h2>
+  </div>
+  <div class="menu">
+    <div class="mi reveal"><div><h4 data-bn="হেয়ারকাট">Haircut</h4><small data-bn="পরামর্শ, কাট আর স্টাইলিং">Consultation, cut and finish</small></div><span class="dots"></span><span class="pr">৳500</span></div>
+    <div class="mi reveal"><div><h4 data-bn="বিয়ার্ড কালার">Beard colour</h4><small data-bn="৩০ মিনিট">30 minutes</small></div><span class="dots"></span><span class="pr">৳300</span></div>
+    <div class="mi reveal"><div><h4 data-bn="হট অয়েল থেরাপি">Hot oil therapy</h4><small data-bn="৩০ মিনিট · মাথার ত্বকের আরাম">30 minutes · scalp relief</small></div><span class="dots"></span><span class="pr">৳1,200</span></div>
+    <div class="mi reveal"><div><h4 data-bn="অয়েল, ভিটামিন ও প্রোটিন">Oil, vitamin &amp; protein</h4><small data-bn="৩০ মিনিট · চুলের যত্ন">30 minutes · hair treatment</small></div><span class="dots"></span><span class="pr">৳1,700</span></div>
+    <div class="mi reveal"><div><h4 data-bn="হাইলাইটস (ক্যাপ)">Highlights with cap</h4><small data-bn="৩০ মিনিট · কালার">30 minutes · colour</small></div><span class="dots"></span><span class="pr">৳2,000</span></div>
+    <div class="mi reveal"><div><h4 data-bn="অন্য কিছু?">Something else?</h4><small data-bn="হোয়াটসঅ্যাপে জিজ্ঞেস করুন">Ask us on WhatsApp</small></div><span class="dots"></span><span class="pr" data-bn="জিজ্ঞেস করুন">Ask</span></div>
+    <p class="menu-note" data-bn="দাম পরিবর্তন হতে পারে। বুক করার সময় নিশ্চিত করে নিন।">Prices may change. Confirm when you book.</p>
+  </div>
+</section>
+
+<section id="builder">
+  <div class="builder">
+    <div class="stage reveal" aria-hidden="true">
+      <svg viewBox="0 0 300 340">
+        <defs>
+          <linearGradient id="sideG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#1b1410"/><stop id="fadeA" offset=".5" stop-color="#1b1410"/><stop id="fadeB" offset=".9" stop-color="#c79a77"/><stop offset="1" stop-color="#c79a77"/>
+          </linearGradient>
+          <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d4a684"/><stop offset="1" stop-color="#b88663"/></linearGradient>
+        </defs>
+        <rect x="128" y="262" width="44" height="60" fill="#b88663"/>
+        <path d="M60 340 Q70 300 128 292 H172 Q230 300 240 340 Z" fill="#2a2a2a"/>
+        <ellipse cx="80" cy="190" rx="13" ry="22" fill="#c39270"/>
+        <ellipse cx="220" cy="190" rx="13" ry="22" fill="#c39270"/>
+        <ellipse cx="150" cy="185" rx="70" ry="90" fill="url(#skin)"/>
+        <path id="sides" d="M80 120 Q78 160 84 200 L96 200 Q92 160 96 128 Z M220 120 Q222 160 216 200 L204 200 Q208 160 204 128 Z" fill="url(#sideG)"/>
+        <path id="ghostTop" fill="none" stroke="rgba(227,197,143,.55)" stroke-width="1.5" stroke-dasharray="5 5"/>
+        <path id="hairTop" fill="#1b1410"/>
+        <path id="partLine" stroke="#3a2a20" stroke-width="2" fill="none"/>
+        <g fill="#2a1d15"><ellipse cx="122" cy="178" rx="9" ry="5"/><ellipse cx="178" cy="178" rx="9" ry="5"/></g>
+        <path d="M108 160 Q122 152 136 158 M164 158 Q178 152 192 160" stroke="#1b1410" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M150 182 Q146 210 140 218 Q150 224 160 218" stroke="#a87656" stroke-width="2" fill="none"/>
+        <path id="beard" fill="#1b1410"/>
+        <path d="M134 240 Q150 248 166 240" stroke="#7a4a3a" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <g id="measure">
+          <path id="mLine" stroke="#c9a063" stroke-width="2" fill="none"/>
+          <text id="mText" font-family="Manrope,sans-serif" font-size="13" font-weight="800" fill="#e3c58f"></text>
+        </g>
+      </svg>
+    </div>
+    <div>
+      <div class="sec-head reveal" style="margin-bottom:30px">
+        <div class="kicker" data-bn="কাট বিল্ডার">Cut builder</div>
+        <h2 data-bn="বসার আগেই &lt;em&gt;ঠিক করুন।&lt;/em&gt;">Decide it <em>before the chair.</em></h2>
+        <p data-bn="স্টাইল, ফেড আর ঠিক কতটুকু কাটবেন বেছে নিন। আপনার নাপিত বুকিংয়ের সাথেই পুরো নির্দেশনা পেয়ে যাবেন, তাই ভুল বোঝাবুঝির সুযোগ নেই।">Pick the style, the fade and exactly how much comes off the top. Your barber gets the full brief with your booking, so nothing gets lost in translation.</p>
+      </div>
+      <div class="reveal">
+        <div class="ctrl"><div class="lbl"><span data-bn="স্টাইল">Style</span></div><div class="seg" id="segStyle"></div></div>
+        <div class="ctrl"><div class="lbl"><span data-bn="উপর থেকে কাটুন">Take off the top</span><b id="topVal">0"</b></div>
+          <input type="range" id="topRange" min="0" max="2" step="0.25" value="0.5" aria-label="Take off the top (inches)">
+          <div class="ticks"><span>0"</span><span>½"</span><span>1"</span><span>1½"</span><span>2"</span></div>
+        </div>
+        <div class="ctrl"><div class="lbl"><span data-bn="পাশ">Sides</span></div><div class="seg" id="segSides"></div></div>
+        <div class="ctrl"><div class="lbl"><span data-bn="দাড়ি">Beard</span></div><div class="seg" id="segBeard"></div></div>
+        <div class="summary"><div class="k" data-bn="আপনার কাট">Your cut</div><p id="cutSummary">—</p><small data-bn="একটি রেফারেন্স ছবি থাকলে হোয়াটসঅ্যাপ চ্যাটে পাঠিয়ে দিন।">Have a reference photo? Drop it in the WhatsApp chat too.</small></div>
+        <a href="#book" class="btn btn-main" id="cutBook" data-bn="এই কাট বুক করুন →">Book this cut →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="why" style="padding-top:40px">
+  <div class="sec-head reveal">
+    <div class="kicker" data-bn="কেন মি. কাটস">Why Mr Cutts</div>
+    <h2 data-bn="শুধু চুল কাটা নয়, &lt;em&gt;পুরো অভিজ্ঞতা।&lt;/em&gt;">More than a cut. <em>The whole ritual.</em></h2>
+  </div>
+  <div class="why">
+    <div class="wy reveal"><div class="n">01</div><h5 data-bn="নিজস্ব টেকনিক">Barbers with technique</h5><p data-bn="প্রত্যেক নাপিতের নিজস্ব স্টাইল আর হাতের কাজ।">Every barber brings his own style and way of working.</p></div>
+    <div class="wy reveal"><div class="n">02</div><h5 data-bn="অভ্যর্থনা থেকে যত্ন">Greeting to pampering</h5><p data-bn="ঢোকার মুহূর্ত থেকে বের হওয়া পর্যন্ত আরাম।">Looked after from the moment you walk in.</p></div>
+    <div class="wy reveal"><div class="n">03</div><h5 data-bn="বছরের পর বছর">Regulars for years</h5><p data-bn="অনেক ক্লায়েন্ট ২০১৭ সাল থেকে নিয়মিত আসছেন।">Some clients have been coming back since 2017.</p></div>
+    <div class="wy reveal"><div class="n">04</div><h5 data-bn="প্রতিদিন খোলা">Open every day</h5><p data-bn="সকাল ১০টা থেকে রাত ৯টা, সপ্তাহের সাত দিন।">10 AM to 9 PM, seven days a week.</p></div>
+  </div>
+</section>
+
+<section id="gallery" style="padding-top:0">
+  <div class="gallery">
+    <div class="gi reveal" data-slot="fade"><img src="img/fade.jpg" alt="Close-up of clippers finishing a clean skin fade" loading="lazy" style="object-position:55% 50%" onerror="this.remove()"><div class="cap" data-bn="&lt;b&gt;ফেড&lt;/b&gt;&lt;span&gt;পরিষ্কার, মসৃণ লাইন&lt;/span&gt;"><b>Fades</b><span>Clean, seamless lines</span></div></div>
+    <div class="gi reveal" data-slot="chair"><img src="img/chair.jpg" alt="A vintage leather and brass barber chair in a warmly lit barbershop" loading="lazy" style="object-position:45% 62%" onerror="this.remove()"><div class="cap" data-bn="&lt;b&gt;চেয়ার&lt;/b&gt;&lt;span&gt;বসুন, বাকিটা আমাদের&lt;/span&gt;"><b>The chair</b><span>Sit back, we've got it</span></div></div>
+    <div class="gi reveal" data-slot="beard"><img src="img/beard.jpg" alt="A barber shaping a beard with a straight razor and comb" loading="lazy" style="object-position:55% 40%" onerror="this.remove()"><div class="cap" data-bn="&lt;b&gt;দাড়ি&lt;/b&gt;&lt;span&gt;শেপ, লাইন-আপ, কালার&lt;/span&gt;"><b>Beard work</b><span>Shape, line-up, colour</span></div></div>
+  </div>
+</section>
+
+<section id="reviews" class="light">
+  <div class="sec-head reveal">
+    <div class="kicker" data-bn="ক্লায়েন্টরা যা বলেন">What clients say</div>
+    <h2 data-bn="নিয়মিতদের &lt;em&gt;কথায়।&lt;/em&gt;">From the <em>regulars.</em></h2>
+  </div>
+  <div class="rev-grid">
+    <div class="rev reveal"><div class="stars">★★★★★</div><q>Always a pleasure to come here!</q><span data-bn="গুগল রিভিউ">Google review</span></div>
+    <div class="rev reveal"><div class="stars">★★★★★</div><q>Each barber has their own type and technique.</q><span data-bn="গুগল রিভিউ">Google review</span></div>
+    <div class="rev reveal"><div class="stars">★★★★★</div><q>Rarely ever had a cut I didn't like.</q><span data-bn="গুগল রিভিউ · ২০১৭ থেকে নিয়মিত">Google review · regular since 2017</span></div>
+  </div>
+</section>
+
+<section id="book">
+  <div class="book">
+    <div class="reveal">
+      <div class="kicker" data-bn="বুকিং">Booking</div>
+      <h2 data-bn="কল লাগবে না। &lt;em&gt;এক মিনিটে বুক করুন।&lt;/em&gt;">No calls. <em>Book in a minute.</em></h2>
+      <ul>
+        <li><b>1</b><span data-bn="সার্ভিস বেছে নিন">Pick your services</span></li>
+        <li><b>2</b><span data-bn="দিন আর সময় ঠিক করুন">Choose a day and time</span></li>
+        <li><b>3</b><span data-bn="হোয়াটসঅ্যাপে পাঠান, আমরা চেয়ার কনফার্ম করব">Send on WhatsApp and we'll confirm your chair</span></li>
+      </ul>
+      <div class="tip" data-bn="&lt;strong&gt;টিপ:&lt;/strong&gt; কাট বিল্ডারে আপনার স্টাইল ঠিক করে নিন, বুকিং মেসেজে নিজে থেকেই যোগ হয়ে যাবে।"><strong>Tip:</strong> set your style in the cut builder first. It's added to your booking message automatically.</div>
+    </div>
+    <form class="form reveal" id="bookForm" novalidate>
+      <h3 data-bn="চেয়ার বুক করুন">Book your chair</h3>
+      <p class="hint" data-bn="সরাসরি আমাদের হোয়াটসঅ্যাপে যাবে।">Goes straight to our WhatsApp.</p>
+      <span class="flbl" data-bn="সার্ভিস">Services</span>
+      <div class="chips" id="sChips">
+        <button type="button" class="chip on" data-v="Haircut" data-bn="হেয়ারকাট">Haircut</button>
+        <button type="button" class="chip" data-v="Beard colour" data-bn="বিয়ার্ড কালার">Beard colour</button>
+        <button type="button" class="chip" data-v="Hot oil therapy" data-bn="হট অয়েল">Hot oil therapy</button>
+        <button type="button" class="chip" data-v="Protein treatment" data-bn="প্রোটিন ট্রিটমেন্ট">Protein treatment</button>
+        <button type="button" class="chip" data-v="Highlights" data-bn="হাইলাইটস">Highlights</button>
+      </div>
+      <div class="cutnote" id="cutNote"></div>
+      <div class="row">
+        <div class="field"><span class="flbl" data-bn="তারিখ">Date</span><input id="bDate" type="date"></div>
+        <div class="field"><span class="flbl" data-bn="পছন্দের নাপিত (ঐচ্ছিক)">Preferred barber (optional)</span><input id="bBarber" type="text" placeholder="Any" data-bn-ph="যেকোনো"></div>
+      </div>
+      <span class="flbl" data-bn="সময়">Time</span>
+      <div class="chips" id="tChips">
+        <button type="button" class="chip" data-v="11 AM" data-bn="সকাল ১১টা">11 AM</button>
+        <button type="button" class="chip" data-v="1 PM" data-bn="দুপুর ১টা">1 PM</button>
+        <button type="button" class="chip" data-v="3 PM" data-bn="বিকেল ৩টা">3 PM</button>
+        <button type="button" class="chip" data-v="5 PM" data-bn="বিকেল ৫টা">5 PM</button>
+        <button type="button" class="chip" data-v="7 PM" data-bn="সন্ধ্যা ৭টা">7 PM</button>
+        <button type="button" class="chip" data-v="8 PM" data-bn="রাত ৮টা">8 PM</button>
+      </div>
+      <div class="row">
+        <div class="field"><span class="flbl" data-bn="আপনার নাম">Your name</span><input id="bName" type="text" autocomplete="name" placeholder="e.g. Tahmid" data-bn-ph="যেমন: তাহমিদ"></div>
+        <div class="field"><span class="flbl" data-bn="ফোন">Phone</span><input id="bPhone" type="tel" autocomplete="tel" placeholder="01XXXXXXXXX"></div>
+      </div>
+      <button type="submit" class="btn" data-bn="হোয়াটসঅ্যাপে বুক করুন →">Book on WhatsApp →</button>
+      <p class="small" data-bn="আপনার তথ্য শুধু মি. কাটসের কাছে যাবে।">Your details go only to Mr Cutts.</p>
+    </form>
+  </div>
+</section>
+
+<section id="visit">
+  <div class="sec-head reveal">
+    <div class="kicker" data-bn="ঠিকানা">Find us</div>
+    <h2 data-bn="রোড ১২, &lt;em&gt;বনানী।&lt;/em&gt;">Road 12, <em>Banani.</em></h2>
+  </div>
+  <div class="visit">
+    <div class="vcard reveal"><div class="k" data-bn="ঠিকানা">Address</div><h4 data-bn="বাড়ি ৭৬, রোড ১২ (৫ম তলা)&lt;br&gt;বনানী, ঢাকা ১২১২">House 76, Road 12 (5th floor)<br>Banani, Dhaka 1212</h4><a class="link" href="https://www.google.com/maps/place/?q=place_id:ChIJs8O87UjHVTcRuQV8LJOwnQA" target="_blank" rel="noopener" data-bn="দিকনির্দেশনা →">Get directions →</a></div>
+    <div class="vcard reveal"><div class="k" data-bn="সময়">Hours</div><h4 data-bn="প্রতিদিন&lt;br&gt;সকাল ১০টা – রাত ৯টা">Every day<br>10 AM – 9 PM</h4><p data-bn="বুক করে আসুন, অপেক্ষা ছাড়াই বসুন।">Book ahead and skip the wait.</p></div>
+    <div class="vcard reveal"><div class="k" data-bn="হোয়াটসঅ্যাপ / কল">WhatsApp / Call</div><h4>+880 1823-772705</h4><a class="link" href="https://wa.me/8801823772705" target="_blank" rel="noopener" data-bn="মেসেজ করুন →">Message us →</a></div>
+  </div>
+  <div class="map reveal"><iframe title="Mr Cutts Banani on Google Maps" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Mr+Cutts,+House+76,+Road+12,+Banani,+Dhaka&z=16&output=embed"></iframe></div>
+</section>
+
+<footer>
+  <div class="foot-big">Mr <em>Cutts</em></div>
+  <div class="foot-row">
+    <div data-bn="© মি. কাটস · বনানী, ঢাকা">© Mr Cutts · Banani, Dhaka</div>
+    <div data-bn="ওয়েবসাইট তৈরি করেছে &lt;a href=&quot;#&quot;&gt;FutureStack Solutions&lt;/a&gt;">Website by <a href="#">FutureStack Solutions</a></div>
+  </div>
+</footer>
+
+<a class="fab" href="https://wa.me/8801823772705" target="_blank" rel="noopener" aria-label="Message on WhatsApp">
+  <svg width="30" height="30" viewBox="0 0 32 32" fill="#fff"><path d="M16 3C8.8 3 3 8.7 3 15.8c0 2.3.6 4.5 1.8 6.4L3 29l7-1.8c1.8 1 3.9 1.5 6 1.5 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-1.9 0-3.8-.5-5.4-1.5l-.4-.2-4.1 1.1 1.1-4-.3-.4c-1.1-1.7-1.6-3.6-1.6-5.6C5.3 10 10.1 5.3 16 5.3S26.7 10 26.7 15.8 21.9 26.4 16 26.4zm5.9-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.3.3-.6.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.7s1.2 3.2 1.4 3.4c.2.2 2.4 3.6 5.7 5 .8.3 1.4.5 1.9.7.8.2 1.5.2 2.1.1.6-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.7-.4z"/></svg>
+</a>
+
+<script>
+  const PHONE='8801823772705';
+  const TITLES={en:"Mr Cutts Banani — Men's Barbershop & Grooming",bn:'মি. কাটস বনানী — পুরুষদের বারবারশপ ও গ্রুমিং'};
+  const lang=()=>document.documentElement.lang;
+  const T=o=>o[lang()]||o.en;
+  const bnNum=s=>String(s).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]);
+
+  // cut builder
+  const STYLES=[
+    {id:'crop',l:{en:'Textured crop',bn:'টেক্সচার্ড ক্রপ'},h:20,fringe:1},
+    {id:'side',l:{en:'Side part',bn:'সাইড পার্ট'},h:26,part:1},
+    {id:'quiff',l:{en:'Quiff',bn:'কুইফ'},h:46,quiff:1},
+    {id:'buzz',l:{en:'Buzz cut',bn:'বাজ কাট'},h:6},
+    {id:'long',l:{en:'Long & textured',bn:'লম্বা টেক্সচার্ড'},h:34,long:1}
+  ];
+  const SIDES=[
+    {id:'low',l:{en:'Low fade',bn:'লো ফেড'},a:.62,b:.95},
+    {id:'mid',l:{en:'Mid fade',bn:'মিড ফেড'},a:.38,b:.72},
+    {id:'high',l:{en:'High fade',bn:'হাই ফেড'},a:.12,b:.45},
+    {id:'scissor',l:{en:'Scissor, no fade',bn:'কাঁচি, ফেড ছাড়া'},a:1,b:1}
+  ];
+  const BEARDS=[
+    {id:'none',l:{en:'Clean shave',bn:'ক্লিন শেভ'}},
+    {id:'line',l:{en:'Line-up',bn:'লাইন-আপ'}},
+    {id:'trim',l:{en:'Short trim',bn:'ছোট ট্রিম'}},
+    {id:'full',l:{en:'Full shape',bn:'ফুল শেপ'}}
+  ];
+  const cut={style:STYLES[0],top:.5,sides:SIDES[1],beard:BEARDS[1],touched:false};
+
+  function topPath(st,take){
+    const H=Math.max(3,st.h-take*16), y=96-H, L=st.long?86:92, R=st.long?214:208;
+    let p=`M80 ${st.long?190:150} C 74 ${110-H*.4}, 104 ${y+4}, 150 ${y} C 196 ${y+4}, 226 ${110-H*.4}, 220 ${st.long?190:150}`;
+    if(st.quiff) p=`M80 150 C 72 ${100-H*.3}, 100 ${y+16}, 140 ${y} C 168 ${y-8}, 214 ${y+6}, 222 ${108-H*.2} Q 224 130 220 150`;
+    if(st.fringe) p+=` L 212 128 L 200 138 L 188 126 L 176 138 L 164 126 L 152 138 L 140 126 L 128 138 L 116 126 L 104 138 L 92 128 Z`;
+    else if(st.long) p+=` L 214 150 Q 196 116 150 114 Q 104 116 86 150 Z`;
+    else p+=` Q 196 118 150 116 Q 104 118 80 ${150} Z`;
+    return p;
+  }
+  function beardPath(id){
+    if(id==='none') return '';
+    if(id==='line') return 'M82 205 Q90 262 150 282 Q210 262 218 205 L214 205 Q206 256 150 276 Q94 256 86 205 Z';
+    if(id==='trim') return 'M84 200 Q88 266 150 286 Q212 266 216 200 Q206 236 186 248 Q168 236 150 238 Q132 236 114 248 Q94 236 84 200 Z';
+    return 'M82 196 Q82 282 150 300 Q218 282 218 196 Q210 238 188 246 Q168 232 150 234 Q132 232 112 246 Q90 238 82 196 Z';
+  }
+  function fmtIn(v){const w=Math.floor(v), f=v-w; const fr={0:'',0.25:'¼',0.5:'½',0.75:'¾'}[f]; const s=(w?w:'')+(fr||'')||'0'; return s+'"'}
+  function summaryText(l){
+    const bn=l==='bn';
+    const top=cut.top?(bn?`উপর থেকে ${bnNum(fmtIn(cut.top))}`:`${fmtIn(cut.top)} off the top`):(bn?'উপরে শুধু শেপ':'Top: shape only');
+    return [T(cut.style.l),top,T(cut.sides.l),T(cut.beard.l)].join(' · ');
+  }
+  function drawCut(){
+    const st=cut.style;
+    document.getElementById('ghostTop').setAttribute('d',topPath(st,0));
+    document.getElementById('hairTop').setAttribute('d',topPath(st,cut.top));
+    document.getElementById('partLine').setAttribute('d',st.part?`M118 ${96-Math.max(3,st.h-cut.top*16)+8} Q120 104 116 120`:'');
+    document.getElementById('fadeA').setAttribute('offset',cut.sides.a);
+    document.getElementById('fadeB').setAttribute('offset',cut.sides.b);
+    document.getElementById('beard').setAttribute('d',beardPath(cut.beard.id));
+    document.getElementById('beard').setAttribute('opacity',cut.beard.id==='trim'?.75:1);
+    const y0=96-st.h, y1=96-Math.max(3,st.h-cut.top*16);
+    document.getElementById('mLine').setAttribute('d',cut.top?`M246 ${y0} V${y1} M240 ${y0} H252 M240 ${y1} H252`:'');
+    const t=document.getElementById('mText'); t.setAttribute('x',258); t.setAttribute('y',(y0+y1)/2+5); t.textContent=cut.top?'−'+fmtIn(cut.top):'';
+    const r=document.getElementById('topRange'); r.style.setProperty('--p',(cut.top/2*100)+'%');
+    document.getElementById('topVal').textContent=lang()==='bn'?bnNum(fmtIn(cut.top)):fmtIn(cut.top);
+    document.getElementById('cutSummary').textContent=summaryText(lang());
+  }
+  function seg(id,list,key){
+    const el=document.getElementById(id);
+    el.innerHTML=list.map(x=>`<button type="button" class="${cut[key]===x?'on':''}" data-id="${x.id}">${T(x.l)}</button>`).join('');
+    el.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{cut[key]=list.find(x=>x.id===b.dataset.id);cut.touched=true;seg(id,list,key);drawCut()}));
+  }
+  function renderSegs(){seg('segStyle',STYLES,'style');seg('segSides',SIDES,'sides');seg('segBeard',BEARDS,'beard')}
+  document.getElementById('topRange').addEventListener('input',e=>{cut.top=+e.target.value;cut.touched=true;drawCut()});
+  function updateCutNote(){
+    const n=document.getElementById('cutNote');
+    if(!cut.touched){n.classList.remove('show');return}
+    n.textContent=(lang()==='bn'?'✂ কাট: ':'✂ Cut: ')+summaryText(lang()); n.classList.add('show');
+  }
+  document.getElementById('cutBook').addEventListener('click',()=>{cut.touched=true;document.querySelector('#sChips .chip[data-v="Haircut"]').classList.add('on');updateCutNote()});
+
+  // i18n
+  const els=[...document.querySelectorAll('[data-bn]')];
+  els.forEach(e=>{e.dataset.en=e.innerHTML;e.classList.add('swap')});
+  const phs=[...document.querySelectorAll('[data-bn-ph]')];
+  phs.forEach(e=>{e.dataset.enPh=e.placeholder});
+
+  function liveStatus(l){
+    const dh=new Date(Date.now()+6*3600000), h=dh.getUTCHours();
+    const open=h>=10 && h<21;
+    const el=document.getElementById('live'), t=document.getElementById('liveText');
+    el.classList.toggle('closed',!open);
+    if(l==='bn') t.textContent=open?'এখন খোলা · রাত ৯টা পর্যন্ত':'এখন বন্ধ · সকাল ১০টায় খুলবে';
+    else t.textContent=open?'Open now · until 9 PM':'Closed now · opens 10 AM';
+  }
+  function setLang(l,animate){
+    const apply=()=>{
+      els.forEach(e=>{e.innerHTML=e.dataset[l]});
+      phs.forEach(e=>{e.placeholder=l==='bn'?e.dataset.bnPh:e.dataset.enPh});
+      document.documentElement.lang=l; document.title=TITLES[l]; liveStatus(l);
+      renderSegs(); drawCut(); updateCutNote();
+      try{localStorage.setItem('mrcutts-lang',l)}catch(_){}
+    };
+    if(!animate){apply();return}
+    document.body.classList.add('fading');
+    setTimeout(()=>{apply();document.body.classList.remove('fading')},220);
+  }
+  let start='en';
+  try{start=new URLSearchParams(location.search).get('lang')||localStorage.getItem('mrcutts-lang')||'en'}catch(_){}
+  setLang(start==='bn'?'bn':'en',false);
+  document.getElementById('lang').addEventListener('click',()=>setLang(lang()==='bn'?'en':'bn',true));
+  setInterval(()=>liveStatus(lang()),60000);
+
+  // booking
+  document.querySelectorAll('#sChips .chip').forEach(c=>c.addEventListener('click',()=>c.classList.toggle('on')));
+  document.querySelectorAll('#tChips .chip').forEach(c=>c.addEventListener('click',()=>{document.querySelectorAll('#tChips .chip').forEach(x=>x.classList.remove('on'));c.classList.add('on')}));
+  document.getElementById('bookForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    const bn=lang()==='bn';
+    const sv=[...document.querySelectorAll('#sChips .chip.on')].map(c=>c.textContent.trim()).join(', ')||'-';
+    const time=(document.querySelector('#tChips .chip.on')||{}).textContent||'-';
+    const v=id=>document.getElementById(id).value.trim()||'-';
+    const lines=bn?['আসসালামু আলাইকুম, চেয়ার বুক করতে চাই।','নাম: '+v('bName'),'ফোন: '+v('bPhone'),'সার্ভিস: '+sv,'তারিখ: '+v('bDate'),'সময়: '+time,'নাপিত: '+(document.getElementById('bBarber').value.trim()||'যেকোনো')]
+                  :["Assalamualaikum, I'd like to book a chair.",'Name: '+v('bName'),'Phone: '+v('bPhone'),'Services: '+sv,'Date: '+v('bDate'),'Time: '+time,'Barber: '+(document.getElementById('bBarber').value.trim()||'Any')];
+    if(cut.touched) lines.push((bn?'কাট: ':'Cut: ')+summaryText(lang()));
+    window.open('https://wa.me/'+PHONE+'?text='+encodeURIComponent(lines.join('\n')),'_blank','noopener');
+  });
+
+
+
+  // futuristic interactions
+  (function(){
+    const hero=document.getElementById('top'); if(!hero) return;
+    const fine=matchMedia('(pointer:fine)').matches;
+    if(fine){
+      hero.addEventListener('pointermove',e=>{
+        const r=hero.getBoundingClientRect(); const x=(e.clientX-r.left)/r.width, y=(e.clientY-r.top)/r.height;
+        hero.style.setProperty('--px',(x-.5)*2); hero.style.setProperty('--py',(y-.5)*2);
+        hero.style.setProperty('--mx',(x*100)+'%'); hero.style.setProperty('--my',(y*100)+'%');
+      });
+      hero.addEventListener('pointerleave',()=>{hero.style.setProperty('--px',0);hero.style.setProperty('--py',0)});
+      document.querySelectorAll('.mag').forEach(b=>{
+        b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.25}px,${(e.clientY-r.top-r.height/2)*.35}px)`});
+        b.addEventListener('pointerleave',()=>{b.style.transform=''});
+      });
+      document.querySelectorAll('.fact.glass').forEach(f=>f.addEventListener('pointermove',e=>{const r=f.getBoundingClientRect();f.style.setProperty('--fx',(e.clientX-r.left)+'px');f.style.setProperty('--fy',(e.clientY-r.top)+'px')}));
+    } else if(window.DeviceOrientationEvent){
+      addEventListener('deviceorientation',e=>{if(e.gamma==null)return;hero.style.setProperty('--px',Math.max(-1,Math.min(1,e.gamma/30)));hero.style.setProperty('--py',Math.max(-1,Math.min(1,(e.beta-45)/30)))});
+    }
+    const clock=document.getElementById('clock');
+    const tick=()=>{const d=new Date(Date.now()+6*3600000);const p=n=>String(n).padStart(2,'0');const t=`${p(d.getUTCHours())}:${p(d.getUTCMinutes())}:${p(d.getUTCSeconds())}`;clock.textContent=lang()==='bn'?'ঢাকা '+bnNum(t):'DHAKA '+t};
+    tick(); setInterval(tick,1000);
+  })();
+  function hudSync(){
+    const el=document.getElementById('hudRead'); if(!el) return;
+    const bn=lang()==='bn';
+    const top=cut.top?(bn?`উপর −${bnNum(fmtIn(cut.top))}`:`−${fmtIn(cut.top)} TOP`):(bn?'শুধু শেপ':'SHAPE ONLY');
+    el.textContent=(T(cut.sides.l)+' · '+top).toUpperCase();
+  }
+  const _draw=drawCut; drawCut=function(){_draw();hudSync()}; hudSync();
+
+  // fit wordmark to width and set cut angle
+  function fitWord(){
+    const w=document.getElementById('word'); if(!w) return;
+    const probe=w.querySelector('.w-top'); w.style.fontSize='200px';
+    const natural=probe.scrollWidth||probe.getBoundingClientRect().width;
+    const range=document.createRange(); range.selectNodeContents(probe); const tw=range.getBoundingClientRect().width;
+    const avail=w.clientWidth; const fs=Math.min(200*avail/tw*0.98, 420);
+    w.style.fontSize=fs+'px';
+    const h=w.clientHeight, W=w.clientWidth;
+    const ang=Math.atan2(-(0.22*h),W)*180/Math.PI;
+    w.style.setProperty('--ang',ang+'deg'); w.style.setProperty('--rise',(-0.22*h)+'px');
+  }
+  fitWord(); addEventListener('resize',fitWord);
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitWord);
+
+  // nav, progress, reveal
+  const nav=document.getElementById('nav'), prog=document.getElementById('progress');
+  addEventListener('scroll',()=>{
+    nav.classList.toggle('scrolled',scrollY>40);
+    const h=document.documentElement.scrollHeight-innerHeight; prog.style.transform='scaleX('+(h>0?scrollY/h:0)+')';
+  },{passive:true});
+  const io=new IntersectionObserver(es=>{
+    es.forEach(e=>{
+      if(e.isIntersecting){
+        const sibs=[...e.target.parentElement.children].filter(c=>c.classList.contains('reveal'));
+        e.target.style.transitionDelay=(Math.max(0,sibs.indexOf(e.target))*0.08)+'s';
+        e.target.classList.add('in'); io.unobserve(e.target);
+      }
+    });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  const frames=document.querySelector('.frames');
+  addEventListener('scroll',()=>{ if(frames && scrollY<900) frames.style.transform=`translateY(${scrollY*0.07}px)`; },{passive:true});
+</script>
+</body>
+</html>
